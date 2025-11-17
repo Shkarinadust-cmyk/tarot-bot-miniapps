@@ -16,53 +16,65 @@
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
-            padding: 20px;
             color: white;
+            line-height: 1.6;
         }
         
         .container {
             max-width: 400px;
             margin: 0 auto;
+            padding: 20px;
         }
         
         .header {
             text-align: center;
             margin-bottom: 30px;
+            padding: 20px 0;
         }
         
         .header h1 {
             font-size: 24px;
             margin-bottom: 5px;
+            font-weight: 600;
+        }
+        
+        .header p {
+            font-size: 14px;
+            opacity: 0.8;
         }
         
         .section {
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
             padding: 20px;
-            border-radius: 20px;
-            margin-bottom: 20px;
+            border-radius: 15px;
+            margin-bottom: 15px;
             border: 1px solid rgba(255, 255, 255, 0.2);
         }
         
-        .balance {
-            font-size: 42px;
-            font-weight: bold;
+        .balance-section {
             text-align: center;
-            margin: 15px 0;
+        }
+        
+        .balance {
+            font-size: 48px;
+            font-weight: bold;
+            margin: 20px 0;
             text-shadow: 0 2px 10px rgba(0,0,0,0.3);
         }
         
         .btn {
             display: block;
             width: 100%;
-            padding: 15px;
+            padding: 16px;
             border: none;
-            border-radius: 15px;
+            border-radius: 12px;
             font-size: 16px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
             text-align: center;
+            margin: 10px 0;
         }
         
         .btn-primary {
@@ -70,25 +82,24 @@
             color: white;
         }
         
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+        .btn-primary:active {
+            transform: scale(0.98);
         }
         
         .btn-secondary {
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.15);
             color: white;
             border: 1px solid rgba(255, 255, 255, 0.3);
         }
         
         h2 {
             font-size: 18px;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
+            font-weight: 600;
         }
         
         p {
             font-size: 14px;
-            line-height: 1.4;
             margin-bottom: 15px;
             opacity: 0.9;
         }
@@ -96,7 +107,7 @@
         .footer {
             display: flex;
             justify-content: space-around;
-            margin-top: 30px;
+            margin-top: 25px;
             padding-top: 20px;
             border-top: 1px solid rgba(255, 255, 255, 0.2);
         }
@@ -104,12 +115,8 @@
         .footer a {
             color: white;
             text-decoration: none;
-            font-size: 14px;
+            font-size: 13px;
             opacity: 0.8;
-        }
-        
-        .footer a:hover {
-            opacity: 1;
         }
         
         .time-settings {
@@ -122,7 +129,25 @@
         .time-row {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        
+        .referral-link {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 12px;
+            border-radius: 8px;
+            margin: 10px 0;
+            font-size: 12px;
+            word-break: break-all;
+        }
+        
+        .friends-list {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 12px;
+            border-radius: 8px;
+            margin: 10px 0;
+            font-size: 14px;
         }
     </style>
 </head>
@@ -134,9 +159,9 @@
         </div>
 
         <!-- БАЛАНС -->
-        <div class="section">
+        <div class="section balance-section">
             <h2>Баланс</h2>
-            <div class="balance" id="balance">7 сообщений</div>
+            <div class="balance" id="balance">10 сообщений</div>
             <button class="btn btn-primary" onclick="showPayment()">Купить сообщения</button>
         </div>
 
@@ -144,6 +169,16 @@
         <div class="section">
             <h2>Посоветуете Аркану подругам?</h2>
             <p>За каждую регистрацию по вашей ссылке вы и друзья получите по <strong>10 сообщений</strong> в подарок!</p>
+            
+            <div class="referral-link" id="referralLink">
+                https://t.me/SputnikTarobot?start=ref_12345
+            </div>
+            
+            <div class="friends-list">
+                <strong>ВАШИ ДРУЗЬЯ</strong><br>
+                Пока нет друзей
+            </div>
+            
             <button class="btn btn-secondary" onclick="inviteFriends()">Пригласить друзей</button>
         </div>
 
@@ -181,75 +216,31 @@
         // Расширяем на весь экран
         tg.expand();
         
+        // Инициализируем при загрузке
+        tg.ready();
+        
         // Функция для кнопки оплаты
         function showPayment() {
+            const paymentUrls = {
+                '100': 'https://yookassa.ru/my/i/aRWz8G2MdcMQ/l',
+                '200': 'https://yookassa.ru/my/i/aRW0Hp0pnJY4/l',
+                '300': 'https://yookassa.ru/my/i/aRW0ONaTgvr4/l',
+                '500': 'https://yookassa.ru/my/i/aRW0UpykQRFm/l',
+                '1000': 'https://yookassa.ru/my/i/aRW0auBkhbht/l'
+            };
+            
             tg.showPopup({
-                title: '💫 Выберите пакет вопросов',
-                message: 'Выберите количество вопросов для пополнения баланса:',
+                title: '💫 ВЫБЕРИТЕ КОЛИЧЕСТВО СООБЩЕНИЙ',
+                message: 'Выберите подходящий пакет вопросов:',
                 buttons: [
-                    {id: '100', type: 'default', text: '100 вопросов - 300 руб.'},
-                    {id: '200', type: 'default', text: '200 вопросов - 600 руб.'},
-                    {id: '300', type: 'default', text: '300 вопросов - 900 руб.'},
-                    {id: '500', type: 'default', text: '500 вопросов - 1500 руб.'},
-                    {id: '1000', type: 'default', text: '1000 вопросов - 3000 руб.'},
+                    {id: '100', type: 'default', text: '● 100 сообщений · 300 ₽'},
+                    {id: '200', type: 'default', text: '○ 200 сообщений · 600 ₽'},
+                    {id: '300', type: 'default', text: '○ 300 сообщений · 900 ₽'},
+                    {id: '500', type: 'default', text: '○ 500 сообщений · 1 500 ₽'},
+                    {id: '1000', type: 'default', text: '○ 1000 сообщений · 3 000 ₽'},
                     {id: 'close', type: 'cancel', text: 'Отмена'}
                 ]
             }, function(buttonId) {
                 if (buttonId !== 'close') {
-                    const paymentUrls = {
-                        '100': 'https://yookassa.ru/my/i/aRWz8G2MdcMQ/l',
-                        '200': 'https://yookassa.ru/my/i/aRW0Hp0pnJY4/l',
-                        '300': 'https://yookassa.ru/my/i/aRW0ONaTgvr4/l',
-                        '500': 'https://yookassa.ru/my/i/aRW0UpykQRFm/l',
-                        '1000': 'https://yookassa.ru/my/i/aRW0auBkhbht/l'
-                    };
                     tg.openLink(paymentUrls[buttonId]);
-                    tg.showAlert(`Вы выбрали ${buttonId} вопросов! Открывается страница оплаты...`);
-                }
-            });
-        }
-        
-        // Функция для приглашения друзей
-        function inviteFriends() {
-            tg.shareUrl(
-                "https://t.me/SputnikTarobot",
-                "🔮 Присоединяйся к магии Таро!\n\nПолучи бесплатные вопросы и узнай свое будущее с ботом @SputnikTarobot!"
-            );
-        }
-        
-        // Функция для карты дня
-        function toggleDailyCard() {
-            tg.showAlert("🎴 Карта дня активирована!\n\nВы будете получать ежедневные советы в 18:00");
-        }
-        
-        // Функции для футера
-        function showReviews() {
-            tg.openLink("https://t.me/your_reviews_channel");
-        }
-        
-        function showSupport() {
-            tg.openLink("https://t.me/your_support_channel");
-        }
-        
-        function showLegal() {
-            tg.showPopup({
-                title: 'Юридическая информация',
-                message: 'Выберите документ для просмотра:',
-                buttons: [
-                    {id: 'terms', type: 'default', text: 'Пользовательское соглашение'},
-                    {id: 'privacy', type: 'default', text: 'Политика конфиденциальности'},
-                    {id: 'close', type: 'cancel', text: 'Закрыть'}
-                ]
-            }, function(buttonId) {
-                if (buttonId === 'terms') {
-                    tg.openLink("https://example.com/terms");
-                } else if (buttonId === 'privacy') {
-                    tg.openLink("https://example.com/privacy");
-                }
-            });
-        }
-        
-        console.log('✅ Мини-приложение загружено в Telegram!');
-    </script>
-</body>
-</html>
+                    tg.showAlert(`✅ Вы выбрали ${button
