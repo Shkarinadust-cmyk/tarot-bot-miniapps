@@ -1,6 +1,6 @@
 # Конфигурация бота
 BOT_TOKEN = "8355095598:AAGi48QWU-4e66ZTR2qMYU6aiK-Py1TxjWU"
-BOT_USERNAME = "@SputnikTarobot"
+BOT_USERNAME = "SputnikTarobot"
 
 # Настройки ЮKassa
 YOOKASSA_SHOP_ID = "ваш_shop_id"
@@ -15,5 +15,5 @@ PAYMENT_LINKS = {
     1000: "https://yookassa.ru/my/i/aRW0auBkhbht/l"
 }
 
-# Настройки веб-приложения
-WEBAPP_URL = "https://shkarinadust-cmyk.github.io/tarot-bot-miniapps/frontend/"
+# Настройки базы данных
+DATABASE_PATH = "tarot_bot.db"

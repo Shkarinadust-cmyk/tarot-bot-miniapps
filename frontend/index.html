@@ -3,147 +3,253 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Аркана – Таро мини-приложение</title>
+    <title>Аркана – Таро</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        /* Добавляем стили для модального окна оплаты */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.5);
-            z-index: 1000;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
         
-        .modal-content {
-            background: white;
-            color: #333;
-            margin: 10% auto;
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
             padding: 20px;
-            border-radius: 15px;
+            color: white;
+        }
+        
+        .container {
             max-width: 400px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .header h1 {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+        
+        .section {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .balance {
+            font-size: 42px;
+            font-weight: bold;
+            text-align: center;
+            margin: 15px 0;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+        
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 15px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
             text-align: center;
         }
         
-        .payment-option {
-            background: #f8f9fa;
+        .btn-primary {
+            background: linear-gradient(45deg, #FF6B6B, #FF8E8E);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+        }
+        
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        h2 {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+        
+        p {
+            font-size: 14px;
+            line-height: 1.4;
+            margin-bottom: 15px;
+            opacity: 0.9;
+        }
+        
+        .footer {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .footer a {
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+            opacity: 0.8;
+        }
+        
+        .footer a:hover {
+            opacity: 1;
+        }
+        
+        .time-settings {
+            background: rgba(0, 0, 0, 0.2);
             padding: 15px;
-            margin: 10px 0;
             border-radius: 10px;
-            cursor: pointer;
-            border: 2px solid transparent;
+            margin: 15px 0;
         }
         
-        .payment-option:hover {
-            border-color: #667eea;
-        }
-        
-        .payment-option.selected {
-            border-color: #667eea;
-            background: #e3f2fd;
+        .time-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
         }
     </style>
 </head>
 <body>
-    <!-- Остальной код остается как был -->
-    
-    <!-- Модальное окно оплаты -->
-    <div id="paymentModal" class="modal">
-        <div class="modal-content">
-            <h3>💫 Выберите пакет вопросов</h3>
+    <div class="container">
+        <div class="header">
+            <h1>Аркана – Таро</h1>
+            <p>мини-приложение</p>
+        </div>
+
+        <!-- БАЛАНС -->
+        <div class="section">
+            <h2>Баланс</h2>
+            <div class="balance" id="balance">7 сообщений</div>
+            <button class="btn btn-primary" onclick="showPayment()">Купить сообщения</button>
+        </div>
+
+        <!-- РЕФЕРАЛКА -->
+        <div class="section">
+            <h2>Посоветуете Аркану подругам?</h2>
+            <p>За каждую регистрацию по вашей ссылке вы и друзья получите по <strong>10 сообщений</strong> в подарок!</p>
+            <button class="btn btn-secondary" onclick="inviteFriends()">Пригласить друзей</button>
+        </div>
+
+        <!-- КАРТА ДНЯ -->
+        <div class="section">
+            <h2>Совет дня</h2>
+            <p>Карта с напутствием для вдохновения и ясности каждый день. Бесплатно.</p>
             
-            <div class="payment-option" onclick="selectPackage(100, 300)">
-                <strong>100 вопросов</strong><br>
-                <span>300 рублей</span>
+            <div class="time-settings">
+                <div class="time-row">
+                    <span>Время</span>
+                    <span>18:00 – 19:00</span>
+                </div>
+                <div class="time-row">
+                    <span>Часовой пояс</span>
+                    <span>Europe/Moscow</span>
+                </div>
             </div>
             
-            <div class="payment-option" onclick="selectPackage(200, 600)">
-                <strong>200 вопросов</strong><br>
-                <span>600 рублей</span>
-            </div>
-            
-            <div class="payment-option" onclick="selectPackage(300, 900)">
-                <strong>300 вопросов</strong><br>
-                <span>900 рублей</span>
-            </div>
-            
-            <div class="payment-option" onclick="selectPackage(500, 1500)">
-                <strong>500 вопросов</strong><br>
-                <span>1500 рублей</span>
-            </div>
-            
-            <div class="payment-option" onclick="selectPackage(1000, 3000)">
-                <strong>1000 вопросов</strong><br>
-                <span>3000 рублей</span>
-            </div>
-            
-            <button onclick="proceedToPayment()" style="margin-top: 20px; padding: 12px 30px; background: #667eea; color: white; border: none; border-radius: 10px; cursor: pointer;">
-                💳 Перейти к оплате
-            </button>
-            
-            <button onclick="closePaymentModal()" style="margin-top: 10px; padding: 10px 20px; background: #ccc; color: #333; border: none; border-radius: 10px; cursor: pointer;">
-                Отмена
-            </button>
+            <button class="btn btn-secondary" onclick="toggleDailyCard()">Готово</button>
+        </div>
+
+        <!-- ФУТЕР -->
+        <div class="footer">
+            <a href="#" onclick="showReviews()">Отзывы</a>
+            <a href="#" onclick="showSupport()">Поддержка</a>
+            <a href="#" onclick="showLegal()">Юридическая информация</a>
         </div>
     </div>
 
     <script>
-        let selectedPackage = null;
+        // Инициализация Telegram Web App
+        const tg = window.Telegram.WebApp;
         
+        // Расширяем на весь экран
+        tg.expand();
+        
+        // Функция для кнопки оплаты
         function showPayment() {
-            document.getElementById('paymentModal').style.display = 'block';
-        }
-        
-        function closePaymentModal() {
-            document.getElementById('paymentModal').style.display = 'none';
-            selectedPackage = null;
-        }
-        
-        function selectPackage(questions, price) {
-            // Убираем выделение у всех options
-            document.querySelectorAll('.payment-option').forEach(opt => {
-                opt.classList.remove('selected');
+            tg.showPopup({
+                title: '💫 Выберите пакет вопросов',
+                message: 'Выберите количество вопросов для пополнения баланса:',
+                buttons: [
+                    {id: '100', type: 'default', text: '100 вопросов - 300 руб.'},
+                    {id: '200', type: 'default', text: '200 вопросов - 600 руб.'},
+                    {id: '300', type: 'default', text: '300 вопросов - 900 руб.'},
+                    {id: '500', type: 'default', text: '500 вопросов - 1500 руб.'},
+                    {id: '1000', type: 'default', text: '1000 вопросов - 3000 руб.'},
+                    {id: 'close', type: 'cancel', text: 'Отмена'}
+                ]
+            }, function(buttonId) {
+                if (buttonId !== 'close') {
+                    const paymentUrls = {
+                        '100': 'https://yookassa.ru/my/i/aRWz8G2MdcMQ/l',
+                        '200': 'https://yookassa.ru/my/i/aRW0Hp0pnJY4/l',
+                        '300': 'https://yookassa.ru/my/i/aRW0ONaTgvr4/l',
+                        '500': 'https://yookassa.ru/my/i/aRW0UpykQRFm/l',
+                        '1000': 'https://yookassa.ru/my/i/aRW0auBkhbht/l'
+                    };
+                    tg.openLink(paymentUrls[buttonId]);
+                    tg.showAlert(`Вы выбрали ${buttonId} вопросов! Открывается страница оплаты...`);
+                }
             });
-            
-            // Добавляем выделение выбранному
-            event.target.classList.add('selected');
-            
-            selectedPackage = {
-                questions: questions,
-                price: price
-            };
         }
         
-        function proceedToPayment() {
-            if (!selectedPackage) {
-                alert('Пожалуйста, выберите пакет вопросов');
-                return;
-            }
-            
-            // Перенаправляем на страницу оплаты ЮKassa
-            const paymentUrls = {
-                100: "https://yookassa.ru/my/i/aRWz8G2MdcMQ/l",
-                200: "https://yookassa.ru/my/i/aRW0Hp0pnJY4/l",
-                300: "https://yookassa.ru/my/i/aRW0ONaTgvr4/l", 
-                500: "https://yookassa.ru/my/i/aRW0UpykQRFm/l",
-                1000: "https://yookassa.ru/my/i/aRW0auBkhbht/l"
-            };
-            
-            window.open(paymentUrls[selectedPackage.questions], '_blank');
-            closePaymentModal();
-            
-            alert(`✅ Вы выбрали пакет из ${selectedPackage.questions} вопросов за ${selectedPackage.price} руб.\n\nОткроется страница оплаты ЮKassa...`);
+        // Функция для приглашения друзей
+        function inviteFriends() {
+            tg.shareUrl(
+                "https://t.me/SputnikTarobot",
+                "🔮 Присоединяйся к магии Таро!\n\nПолучи бесплатные вопросы и узнай свое будущее с ботом @SputnikTarobot!"
+            );
         }
         
-        // Закрытие модального окна при клике вне его
-        window.onclick = function(event) {
-            const modal = document.getElementById('paymentModal');
-            if (event.target === modal) {
-                closePaymentModal();
-            }
+        // Функция для карты дня
+        function toggleDailyCard() {
+            tg.showAlert("🎴 Карта дня активирована!\n\nВы будете получать ежедневные советы в 18:00");
         }
+        
+        // Функции для футера
+        function showReviews() {
+            tg.openLink("https://t.me/your_reviews_channel");
+        }
+        
+        function showSupport() {
+            tg.openLink("https://t.me/your_support_channel");
+        }
+        
+        function showLegal() {
+            tg.showPopup({
+                title: 'Юридическая информация',
+                message: 'Выберите документ для просмотра:',
+                buttons: [
+                    {id: 'terms', type: 'default', text: 'Пользовательское соглашение'},
+                    {id: 'privacy', type: 'default', text: 'Политика конфиденциальности'},
+                    {id: 'close', type: 'cancel', text: 'Закрыть'}
+                ]
+            }, function(buttonId) {
+                if (buttonId === 'terms') {
+                    tg.openLink("https://example.com/terms");
+                } else if (buttonId === 'privacy') {
+                    tg.openLink("https://example.com/privacy");
+                }
+            });
+        }
+        
+        console.log('✅ Мини-приложение загружено в Telegram!');
     </script>
 </body>
 </html>

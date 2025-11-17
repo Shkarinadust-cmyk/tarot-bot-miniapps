@@ -20,9 +20,21 @@ def init_db():
         )
     ''')
     
+    # Таблица платежей
+    c.execute('''
+        CREATE TABLE IF NOT EXISTS payments (
+            payment_id TEXT PRIMARY KEY,
+            user_id INTEGER,
+            questions_count INTEGER,
+            amount INTEGER,
+            status TEXT DEFAULT 'pending',
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+    ''')
+    
     conn.commit()
     conn.close()
-    print("✅ База данных инициализирована!")
+    print("✅ База данных создана!")
 
 if __name__ == '__main__':
     init_db()
