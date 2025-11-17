@@ -84,6 +84,7 @@
         
         .btn-primary:active {
             transform: scale(0.98);
+            background: linear-gradient(45deg, #e55a5a, #e57a7a);
         }
         
         .btn-secondary {
@@ -150,31 +151,68 @@
             font-size: 14px;
         }
         
-        .payment-options {
-            background: rgba(0, 0, 0, 0.3);
-            padding: 15px;
-            border-radius: 10px;
-            margin: 15px 0;
+        .payment-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 1000;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .payment-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            color: #333;
+            padding: 25px;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 350px;
+            text-align: center;
         }
         
         .payment-option {
             display: flex;
             justify-content: space-between;
-            padding: 12px;
-            margin: 8px 0;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
+            padding: 15px;
+            margin: 10px 0;
+            background: #f8f9fa;
+            border-radius: 10px;
             cursor: pointer;
             border: 2px solid transparent;
+            transition: all 0.3s ease;
         }
         
         .payment-option:hover {
-            border-color: #FF6B6B;
+            border-color: #667eea;
+            background: #e3f2fd;
         }
         
         .payment-option.selected {
             border-color: #FF6B6B;
-            background: rgba(255, 107, 107, 0.2);
+            background: #ffeaea;
+        }
+        
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #666;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
     </style>
 </head>
@@ -189,7 +227,7 @@
         <div class="section balance-section">
             <h2>Баланс</h2>
             <div class="balance" id="balance">10 сообщений</div>
-            <button class="btn btn-primary" onclick="showPayment()">Купить сообщения</button>
+            <button class="btn btn-primary" onclick="showPaymentModal()">Купить сообщения</button>
         </div>
 
         <!-- РЕФЕРАЛКА -->
@@ -236,45 +274,125 @@
         </div>
     </div>
 
+    <!-- МОДАЛЬНОЕ ОКНО ОПЛАТЫ -->
+    <div id="paymentModal" class="payment-modal">
+        <div class="payment-content">
+            <button class="close-btn" onclick="closePaymentModal()">×</button>
+            <h2 style="color: #333; margin-bottom: 20px;">💫 ВЫБЕРИТЕ ПАКЕТ</h2>
+            
+            <div class="payment-option" onclick="selectPackage(100, 300)">
+                <span>100 сообщений</span>
+                <strong>300 ₽</strong>
+            </div>
+            
+            <div class="payment-option" onclick="selectPackage(200, 600)">
+                <span>200 сообщений</span>
+                <strong>600 ₽</strong>
+            </div>
+            
+            <div class="payment-option" onclick="selectPackage(300, 900)">
+                <span>300 сообщений</span>
+                <strong>900 ₽</strong>
+            </div>
+            
+            <div class="payment-option" onclick="selectPackage(500, 1500)">
+                <span>500 сообщений</span>
+                <strong>1 500 ₽</strong>
+            </div>
+            
+            <div class="payment-option" onclick="selectPackage(1000, 3000)">
+                <span>1000 сообщений</span>
+                <strong>3 000 ₽</strong>
+            </div>
+            
+            <button id="payButton" class="btn btn-primary" style="margin-top: 20px; opacity: 0.5;" disabled onclick="processPayment()">
+                Перейти к оплате
+            </button>
+        </div>
+    </div>
+
     <script>
         // Инициализация Telegram Web App
         const tg = window.Telegram.WebApp;
         
         // Расширяем на весь экран
         tg.expand();
-        
-        // Инициализируем при загрузке
         tg.ready();
         
         let selectedPackage = null;
         
-        // Функция для кнопки оплаты - ТОЧНО РАБОЧАЯ
-        function showPayment() {
-            const paymentUrls = {
-                '100': 'https://yookassa.ru/my/i/aRWz8G2MdcMQ/l',
-                '200': 'https://yookassa.ru/my/i/aRW0Hp0pnJY4/l', 
-                '300': 'https://yookassa.ru/my/i/aRW0ONaTgvr4/l',
-                '500': 'https://yookassa.ru/my/i/aRW0UpykQRFm/l',
-                '1000': 'https://yookassa.ru/my/i/aRW0auBkhbht/l'
+        // Функции для модального окна оплаты
+        function showPaymentModal() {
+            console.log('Кнопка нажата! Открываем модальное окно...');
+            document.getElementById('paymentModal').style.display = 'block';
+            selectedPackage = null;
+            updatePayButton();
+        }
+        
+        function closePaymentModal() {
+            document.getElementById('paymentModal').style.display = 'none';
+            selectedPackage = null;
+        }
+        
+        function selectPackage(questions, price) {
+            // Убираем выделение у всех options
+            document.querySelectorAll('.payment-option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            
+            // Добавляем выделение выбранному
+            event.target.classList.add('selected');
+            
+            selectedPackage = {
+                questions: questions,
+                price: price
             };
             
-            tg.showPopup({
-                title: '💫 ВЫБЕРИТЕ КОЛИЧЕСТВО СООБЩЕНИЙ',
-                message: 'Выберите подходящий пакет вопросов:',
-                buttons: [
-                    {id: '100', type: 'default', text: '100 сообщений · 300 ₽'},
-                    {id: '200', type: 'default', text: '200 сообщений · 600 ₽'},
-                    {id: '300', type: 'default', text: '300 сообщений · 900 ₽'},
-                    {id: '500', type: 'default', text: '500 сообщений · 1 500 ₽'},
-                    {id: '1000', type: 'default', text: '1000 сообщений · 3 000 ₽'},
-                    {id: 'close', type: 'cancel', text: 'Отмена'}
-                ]
-            }, function(buttonId) {
-                if (buttonId !== 'close' && paymentUrls[buttonId]) {
-                    tg.openLink(paymentUrls[buttonId]);
-                    tg.showAlert(`✅ Вы выбрали ${buttonId} вопросов! Открывается страница оплаты...`);
-                }
-            });
+            updatePayButton();
+        }
+        
+        function updatePayButton() {
+            const payButton = document.getElementById('payButton');
+            if (selectedPackage) {
+                payButton.disabled = false;
+                payButton.style.opacity = '1';
+                payButton.textContent = `Оплатить ${selectedPackage.price} ₽`;
+            } else {
+                payButton.disabled = true;
+                payButton.style.opacity = '0.5';
+                payButton.textContent = 'Перейти к оплате';
+            }
+        }
+        
+        function processPayment() {
+            if (!selectedPackage) return;
+            
+            const paymentUrls = {
+                100: 'https://yookassa.ru/my/i/aRWz8G2MdcMQ/l',
+                200: 'https://yookassa.ru/my/i/aRW0Hp0pnJY4/l',
+                300: 'https://yookassa.ru/my/i/aRW0ONaTgvr4/l',
+                500: 'https://yookassa.ru/my/i/aRW0UpykQRFm/l',
+                1000: 'https://yookassa.ru/my/i/aRW0auBkhbht/l'
+            };
+            
+            const paymentUrl = paymentUrls[selectedPackage.questions];
+            
+            if (paymentUrl) {
+                console.log('Открываем ссылку оплаты:', paymentUrl);
+                tg.openLink(paymentUrl);
+                closePaymentModal();
+                
+                // Показываем подтверждение
+                tg.showAlert(`✅ Вы выбрали ${selectedPackage.questions} вопросов за ${selectedPackage.price} руб.!`);
+            }
+        }
+        
+        // Закрытие модального окна при клике вне его
+        window.onclick = function(event) {
+            const modal = document.getElementById('paymentModal');
+            if (event.target === modal) {
+                closePaymentModal();
+            }
         }
         
         // Функция для приглашения друзей
@@ -308,16 +426,15 @@
                     {id: 'privacy', type: 'default', text: 'Политика конфиденциальности'},
                     {id: 'close', type: 'cancel', text: 'Закрыть'}
                 ]
-            }, function(buttonId) {
-                if (buttonId === 'terms') {
-                    tg.openLink("https://example.com/terms");
-                } else if (buttonId === 'privacy') {
-                    tg.openLink("https://example.com/privacy");
-                }
             });
         }
         
-        console.log('✅ Мини-приложение загружено в Telegram!');
+        console.log('✅ Мини-приложение загружено! Кнопка должна работать!');
+        
+        // Тест кнопки в консоли
+        setTimeout(() => {
+            console.log('🔧 Для теста: showPaymentModal() - открыть окно оплаты');
+        }, 1000);
     </script>
 </body>
 </html>
