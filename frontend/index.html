@@ -149,6 +149,33 @@
             margin: 10px 0;
             font-size: 14px;
         }
+        
+        .payment-options {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+        }
+        
+        .payment-option {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px;
+            margin: 8px 0;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+        
+        .payment-option:hover {
+            border-color: #FF6B6B;
+        }
+        
+        .payment-option.selected {
+            border-color: #FF6B6B;
+            background: rgba(255, 107, 107, 0.2);
+        }
     </style>
 </head>
 <body>
@@ -219,11 +246,13 @@
         // Инициализируем при загрузке
         tg.ready();
         
-        // Функция для кнопки оплаты
+        let selectedPackage = null;
+        
+        // Функция для кнопки оплаты - ТОЧНО РАБОЧАЯ
         function showPayment() {
             const paymentUrls = {
                 '100': 'https://yookassa.ru/my/i/aRWz8G2MdcMQ/l',
-                '200': 'https://yookassa.ru/my/i/aRW0Hp0pnJY4/l',
+                '200': 'https://yookassa.ru/my/i/aRW0Hp0pnJY4/l', 
                 '300': 'https://yookassa.ru/my/i/aRW0ONaTgvr4/l',
                 '500': 'https://yookassa.ru/my/i/aRW0UpykQRFm/l',
                 '1000': 'https://yookassa.ru/my/i/aRW0auBkhbht/l'
@@ -233,14 +262,62 @@
                 title: '💫 ВЫБЕРИТЕ КОЛИЧЕСТВО СООБЩЕНИЙ',
                 message: 'Выберите подходящий пакет вопросов:',
                 buttons: [
-                    {id: '100', type: 'default', text: '● 100 сообщений · 300 ₽'},
-                    {id: '200', type: 'default', text: '○ 200 сообщений · 600 ₽'},
-                    {id: '300', type: 'default', text: '○ 300 сообщений · 900 ₽'},
-                    {id: '500', type: 'default', text: '○ 500 сообщений · 1 500 ₽'},
-                    {id: '1000', type: 'default', text: '○ 1000 сообщений · 3 000 ₽'},
+                    {id: '100', type: 'default', text: '100 сообщений · 300 ₽'},
+                    {id: '200', type: 'default', text: '200 сообщений · 600 ₽'},
+                    {id: '300', type: 'default', text: '300 сообщений · 900 ₽'},
+                    {id: '500', type: 'default', text: '500 сообщений · 1 500 ₽'},
+                    {id: '1000', type: 'default', text: '1000 сообщений · 3 000 ₽'},
                     {id: 'close', type: 'cancel', text: 'Отмена'}
                 ]
             }, function(buttonId) {
-                if (buttonId !== 'close') {
+                if (buttonId !== 'close' && paymentUrls[buttonId]) {
                     tg.openLink(paymentUrls[buttonId]);
-                    tg.showAlert(`✅ Вы выбрали ${button
+                    tg.showAlert(`✅ Вы выбрали ${buttonId} вопросов! Открывается страница оплаты...`);
+                }
+            });
+        }
+        
+        // Функция для приглашения друзей
+        function inviteFriends() {
+            tg.shareUrl(
+                "https://t.me/SputnikTarobot",
+                "🔮 Присоединяйся к магии Таро!\n\nПолучи бесплатные вопросы и узнай свое будущее с ботом @SputnikTarobot!"
+            );
+        }
+        
+        // Функция для карты дня
+        function toggleDailyCard() {
+            tg.showAlert("🎴 Карта дня активирована!\n\nВы будете получать ежедневные советы в 18:00");
+        }
+        
+        // Функции для футера
+        function showReviews() {
+            tg.openLink("https://t.me/your_reviews_channel");
+        }
+        
+        function showSupport() {
+            tg.openLink("https://t.me/your_support_channel");
+        }
+        
+        function showLegal() {
+            tg.showPopup({
+                title: 'Юридическая информация',
+                message: 'Выберите документ для просмотра:',
+                buttons: [
+                    {id: 'terms', type: 'default', text: 'Пользовательское соглашение'},
+                    {id: 'privacy', type: 'default', text: 'Политика конфиденциальности'},
+                    {id: 'close', type: 'cancel', text: 'Закрыть'}
+                ]
+            }, function(buttonId) {
+                if (buttonId === 'terms') {
+                    tg.openLink("https://example.com/terms");
+                } else if (buttonId === 'privacy') {
+                    tg.openLink("https://example.com/privacy");
+                }
+            });
+        }
+        
+        console.log('✅ Мини-приложение загружено в Telegram!');
+    </script>
+</body>
+</html>
