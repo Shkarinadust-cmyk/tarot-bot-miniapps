@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Совет дня - Аркана</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Аркана – Таро...</h1>
+            <p class="subtitle">мини-приложение</p>
+        </header>
+
+        <section>
+            <h2>Совет дня</h2>
+            <p>Карта с напутствием для вдохновения и ясности каждый день. Бесплатно.</p>
+
+            <div class="advice-toggle">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin: 20px 0;">
+                    <span>Совет дня</span>
+                    <label class="switch">
+                        <input type="checkbox" id="adviceToggle" checked>
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+
+                <div id="timeSettings" style="background: #f5f1e8; padding: 15px; border-radius: 8px; margin: 15px 0;">
+                    <div style="margin-bottom: 15px;">
+                        <label><strong>Время</strong></label>
+                        <select style="width: 100%; padding: 8px; margin-top: 5px; border: 1px solid #d7ccc8; border-radius: 6px;">
+                            <option>18:00 – 19:00</option>
+                            <option>09:00 – 10:00</option>
+                            <option>12:00 – 13:00</option>
+                            <option>21:00 – 22:00</option>
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label><strong>Часовой пояс</strong></label>
+                        <select style="width: 100%; padding: 8px; margin-top: 5px; border: 1px solid #d7ccc8; border-radius: 6px;">
+                            <option>Europe/Moscow</option>
+                            <option>Europe/London</option>
+                            <option>America/New_York</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <button class="btn-primary" onclick="saveSettings()">Готово</button>
+        </section>
+    </div>
+
+    <script>
+        const toggle = document.getElementById('adviceToggle');
+        const timeSettings = document.getElementById('timeSettings');
+
+        toggle.addEventListener('change', function() {
+            timeSettings.style.display = this.checked ? 'block' : 'none';
+        });
+
+        function saveSettings() {
+            alert('Настройки сохранены!');
+            window.history.back();
+        }
+    </script>
+
+    <style>
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+        }
+
+        input:checked + .slider {
+            background-color: #6d4c41;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+
+        .slider.round {
+            border-radius: 24px;
+        }
+
+        .slider.round:before {
+            border-radius: 50%;
+        }
+    </style>
+</body>
+</html>

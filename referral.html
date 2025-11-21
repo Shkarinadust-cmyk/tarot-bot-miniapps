@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Пригласить друзей - Аркана</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Аркана – Таро...</h1>
+            <p class="subtitle">мини-приложение</p>
+        </header>
+
+        <section>
+            <h2>Посоветуете Аркану подругам?</h2>
+            <p>За каждую регистрацию по вашей ссылке вы и друзья получите по <strong>10 сообщений</strong> в подарок!</p>
+
+            <div class="referral-link">
+                <p><strong>ВАША ССЫЛКА</strong></p>
+                <div style="background: #f5f1e8; padding: 10px; border-radius: 8px; word-break: break-all; font-size: 0.9em;">
+                    https://t.me/SputnikTarobot?start=ref_<span id="userId">12345</span>
+                </div>
+            </div>
+
+            <div class="friends-list">
+                <p><strong>ВАШИ ДРУЗЬЯ</strong></p>
+                <p style="color: #8d6e63;">Пока нет друзей</p>
+            </div>
+
+            <button class="btn-primary" onclick="inviteFriends()">Пригласить друзей</button>
+        </section>
+    </div>
+
+    <script>
+        function inviteFriends() {
+            const referralLink = `https://t.me/SputnikTarobot?start=ref_${document.getElementById('userId').textContent}`;
+            const message = `🔮 Привет! Я использую этого замечательного бота для гаданий Таро. Попробуй и получи 10 бесплатных вопросов! ${referralLink}`;
+            
+            // В реальном Mini App это откроет диалог выбора контактов
+            if (window.Telegram && window.Telegram.WebApp) {
+                window.Telegram.WebApp.shareMessage({text: message});
+            } else {
+                // Для тестирования вне Telegram
+                alert(`Сообщение для отправки: ${message}`);
+            }
+        }
+    </script>
+</body>
+</html>

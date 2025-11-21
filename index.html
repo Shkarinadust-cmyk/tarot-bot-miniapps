@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Аркана – Таро</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Аркана – Таро...</h1>
+            <p class="subtitle">мини-приложение</p>
+        </header>
+
+        <section class="balance-section">
+            <h2>Баланс</h2>
+            <div class="balance-amount" id="balance">7 сообщений</div>
+            <button class="btn-primary" onclick="window.location.href='payment.html'">Купить сообщения</button>
+        </section>
+
+        <section class="referral-preview" onclick="window.location.href='referral.html'">
+            <h3>Посоветуете Аркану подругам?</h3>
+            <p>За каждую регистрацию по вашей ссылке вы и друзья получите по 10 сообщений в подарок!</p>
+        </section>
+
+        <section class="advice-preview" onclick="window.location.href='advice-settings.html'">
+            <h3>Совет дня</h3>
+            <p class="time-slot">18:00 – 19:00</p>
+        </section>
+
+        <footer>
+            <div class="footer-link" onclick="openLink('https://t.me/your_reviews_channel')">Отзывы</div>
+            <div class="footer-link" onclick="openLink('https://t.me/your_support_channel')">Поддержка</div>
+            <div class="footer-link" onclick="openLink('legal.html')">Юридическая информация</div>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
