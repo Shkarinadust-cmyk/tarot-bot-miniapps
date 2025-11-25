@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Аркана – Таро</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Заголовок -->
+        <header class="header">
+            <h1># Аркана – Таро...</h1>
+            <p class="subtitle">мини-приложение</p>
+        </header>
+
+        <!-- Баланс -->
+        <section class="balance-section">
+            <h2>## Баланс</h2>
+            <div class="balance-amount" id="balanceAmount">7 сообщений</div>
+            <button class="btn-primary" onclick="openPayment()">Купить сообщения</button>
+        </section>
+
+        <!-- Пригласить друзей -->
+        <section class="referral-section" onclick="openReferral()">
+            <h3>Посоветуете Аркану подругам?</h3>
+            <p>За каждую регистрацию по вашей ссылке вы и друзья получите по 10 сообщений в подарок!</p>
+        </section>
+
+        <!-- Совет дня -->
+        <section class="advice-section" onclick="openAdvice()">
+            <div class="advice-header">
+                <h3>Совет дня</h3>
+                <div class="toggle" id="adviceToggle">
+                    <div class="toggle-circle"></div>
+                </div>
+            </div>
+            <p class="advice-time" id="adviceTime">18:00 – 19:00</p>
+        </section>
+
+        <!-- Нижнее меню -->
+        <nav class="bottom-nav">
+            <div class="nav-item" onclick="openReviews()">Отзывы</div>
+            <div class="nav-item" onclick="openSupport()">Поддержка</div>
+            <div class="nav-item" onclick="openLegal()">Юридическая информация</div>
+        </nav>
+    </div>
+
+    <!-- Модальные окна -->
+    <div id="paymentModal" class="modal">
+        <div class="modal-content">
+            <h2>Купить сообщения</h2>
+            <div class="payment-options">
+                <div class="payment-option" onclick="selectPackage(100, 300)">
+                    <span>100 сообщений</span>
+                    <span>300 ₽</span>
+                </div>
+                <div class="payment-option" onclick="selectPackage(200, 600)">
+                    <span>200 сообщений</span>
+                    <span>600 ₽</span>
+                </div>
+                <div class="payment-option active" onclick="selectPackage(300, 900)">
+                    <span>300 сообщений</span>
+                    <span>900 ₽</span>
+                </div>
+                <div class="payment-option" onclick="selectPackage(500, 1500)">
+                    <span>500 сообщений</span>
+                    <span>1 500 ₽</span>
+                </div>
+                <div class="payment-option" onclick="selectPackage(1000, 3000)">
+                    <span>1000 сообщений</span>
+                    <span>3 000 ₽</span>
+                </div>
+            </div>
+            <div class="payment-methods">
+                <button class="btn-payment" onclick="processPayment('card')">💳 Банковская карта</button>
+                <button class="btn-payment" onclick="processPayment('sbp')">📱 СБП</button>
+            </div>
+            <p class="legal-text">Приобретая сообщения вы принимаете Условия использования.</p>
+            <button class="btn-close" onclick="closeModal('paymentModal')">Закрыть</button>
+        </div>
+    </div>
+
+    <div id="referralModal" class="modal">
+        <div class="modal-content">
+            <h2>Пригласить друзей</h2>
+            <p>За каждую регистрацию по вашей ссылке вы и друзья получите по <strong>10 сообщений</strong> в подарок!</p>
+            <div class="referral-link">
+                <input type="text" id="referralLink" readonly>
+                <button onclick="copyReferralLink()">Копировать</button>
+            </div>
+            <div class="friends-list">
+                <h4>ВАШИ ДРУЗЬЯ</h4>
+                <p>Пока нет друзей</p>
+            </div>
+            <button class="btn-primary" onclick="shareReferral()">Пригласить друзей</button>
+            <button class="btn-close" onclick="closeModal('referralModal')">Закрыть</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>b11949

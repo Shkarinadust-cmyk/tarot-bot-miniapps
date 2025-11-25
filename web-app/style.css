@@ -1,0 +1,238 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: linear-gradient(135deg, #8B4513, #A0522D);
+    color: #FFF;
+    line-height: 1.6;
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.header h1 {
+    font-size: 18px;
+    margin-bottom: 5px;
+}
+
+.subtitle {
+    font-size: 14px;
+    opacity: 0.8;
+}
+
+.balance-section {
+    background: rgba(139, 69, 19, 0.8);
+    padding: 20px;
+    border-radius: 15px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.balance-amount {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 10px 0;
+    color: #FFD700;
+}
+
+.btn-primary {
+    background: #D2691E;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 25px;
+    font-size: 16px;
+    cursor: pointer;
+    width: 100%;
+    transition: background 0.3s;
+}
+
+.btn-primary:hover {
+    background: #CD853F;
+}
+
+.referral-section, .advice-section {
+    background: rgba(160, 82, 45, 0.8);
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.referral-section:hover, .advice-section:hover {
+    background: rgba(160, 82, 45, 1);
+}
+
+.advice-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.toggle {
+    width: 50px;
+    height: 25px;
+    background: #8B4513;
+    border-radius: 25px;
+    position: relative;
+    cursor: pointer;
+}
+
+.toggle-circle {
+    width: 21px;
+    height: 21px;
+    background: #FFF;
+    border-radius: 50%;
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    transition: transform 0.3s;
+}
+
+.toggle.active .toggle-circle {
+    transform: translateX(25px);
+}
+
+.advice-time {
+    font-size: 14px;
+    opacity: 0.8;
+}
+
+.bottom-nav {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 30px;
+}
+
+.nav-item {
+    padding: 10px;
+    cursor: pointer;
+    opacity: 0.8;
+    transition: opacity 0.3s;
+}
+
+.nav-item:hover {
+    opacity: 1;
+}
+
+/* Модальные окна */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 1000;
+}
+
+.modal-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #8B4513;
+    padding: 20px;
+    border-radius: 15px;
+    width: 90%;
+    max-width: 400px;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.payment-option {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px;
+    margin: 10px 0;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.payment-option:hover, .payment-option.active {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.payment-methods {
+    margin: 20px 0;
+}
+
+.btn-payment {
+    background: #D2691E;
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 10px;
+    margin: 5px 0;
+    width: 100%;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.btn-payment:hover {
+    background: #CD853F;
+}
+
+.legal-text {
+    font-size: 12px;
+    opacity: 0.7;
+    margin: 10px 0;
+    text-align: center;
+}
+
+.btn-close {
+    background: transparent;
+    color: #FFF;
+    border: 1px solid #FFF;
+    padding: 10px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.referral-link {
+    display: flex;
+    margin: 15px 0;
+}
+
+.referral-link input {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    border-radius: 5px 0 0 5px;
+}
+
+.referral-link button {
+    background: #D2691E;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 0 5px 5px 0;
+    cursor: pointer;
+}
+
+.friends-list {
+    margin: 15px 0;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+}
