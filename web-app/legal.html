@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Юридическая информация - Аркана Таро</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #8B4513, #A0522D);
+            color: #FFF; line-height: 1.6; min-height: 100vh;
+            padding: 20px;
+        }
+        .container { max-width: 800px; margin: 0 auto; }
+        .header { text-align: center; margin-bottom: 30px; }
+        .legal-content { 
+            background: rgba(139, 69, 19, 0.9); 
+            padding: 30px; border-radius: 15px; 
+            margin-bottom: 20px;
+        }
+        h1 { margin-bottom: 20px; color: #FFD700; }
+        h2 { margin: 25px 0 15px 0; color: #D2691E; }
+        p { margin-bottom: 15px; }
+        .back-btn {
+            background: #D2691E; color: white; border: none;
+            padding: 12px 24px; border-radius: 25px; 
+            font-size: 16px; cursor: pointer; width: 100%;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1># Аркана – Таро</h1>
+            <p>Юридическая информация</p>
+        </div>
+
+        <div class="legal-content">
+            <h1>Пользовательское соглашение</h1>
+            
+            <h2>1. Общие положения</h2>
+            <p>1.1. Настоящее Пользовательское соглашение регулирует отношения между пользователем и ботом "Спу́тник Таро".</p>
+            
+            <h2>2. Услуги</h2>
+            <p>2.1. Бот предоставляет услуги таролога - проведение раскладов карт Таро и их толкование.</p>
+            <p>2.2. Услуги носят развлекательный характер и не являются профессиональной консультацией.</p>
+            
+            <h2>3. Оплата</h2>
+            <p>3.1. Услуги предоставляются на платной основе через систему ЮКасса.</p>
+            <p>3.2. Возврат средств осуществляется в соответствии с законодательством РФ.</p>
+            
+            <h2>4. Конфиденциальность</h2>
+            <p>4.1. Мы не храним персональные данные пользователей.</p>
+            <p>4.2. Все сообщения защищены шифрованием Telegram.</p>
+
+            <button class="back-btn" onclick="goBack()">← Назад</button>
+        </div>
+
+        <div class="legal-content">
+            <h1>Политика конфиденциальности</h1>
+            
+            <h2>Сбор информации</h2>
+            <p>Мы собираем только необходимую информацию для работы бота:</p>
+            <ul>
+                <li>ID пользователя Telegram</li>
+                <li>Баланс вопросов</li>
+                <li>История платежей</li>
+            </ul>
+            
+            <h2>Использование информации</h2>
+            <p>Информация используется исключительно для:</p>
+            <ul>
+                <li>Предоставления услуг Таро</li>
+                <li>Управления балансом вопросов</li>
+                <li>Обработки платежей</li>
+            </ul>
+            
+            <h2>Безопасность</h2>
+            <p>Все данные хранятся в зашифрованном виде и защищены от несанкционированного доступа.</p>
+
+            <button class="back-btn" onclick="goBack()">← Назад</button>
+        </div>
+    </div>
+
+    <script>
+        function goBack() {
+            window.history.back();
+        }
+    </script>
+</body>
+</html>
