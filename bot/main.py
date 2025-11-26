@@ -95,68 +95,7 @@ def get_random_card():
     position = random.choice(["прямое", "перевернутое"])
     return f"{card} ({position})"
 
-def get_tarot_reading(user_question, cards):
-    """Толкование через DeepSeek"""
-    
-    if not DEEPSEEK_API_KEY:
-        logger.error("❌ DEEPSEEK_API_KEY не найден!")
-        return "❌ Ошибка: API ключ не настроен"
-    
-    prompt = f'''
-Ты - мудрый таролог Спу́тник. Дай толкование расклада.
-
-Вопрос: "{user_question}"
-Карты: {", ".join(cards)}
-
-Дай краткое толкование (5-7 предложений) с:
-- Анализом карт
-- Связью с вопросом  
-- Практическим советом
-- Поддержкой
-
-Тон: мудрый, спокойный, поддерживающий.
-Используй эмодзи и жирный шрифт.
-'''
-    
-    try:
-        headers = {
-            "Content-Type": "application/json",
-            "Authorization": f"Bearer {DEEPSEEK_API_KEY}"
-        }
-        
-        data = {
-            "model": "deepseek-chat",
-            "messages": [{"role": "user", "content": prompt}],
-            "max_tokens": 500,
-            "temperature": 0.7
-        }
-        
-        logger.info("🔄 Запрос к DeepSeek...")
-        response = requests.post(DEEPSEEK_API_URL, headers=headers, json=data, timeout=30)
-        response.raise_for_status()
-        
-        result = response.json()
-        reading = result['choices'][0]['message']['content']
-        logger.info("✅ DeepSeek ответил!")
-        
-        return reading
-        
-    except Exception as e:
-        logger.error(f"❌ Ошибка DeepSeek: {e}")
-        return f"""
-✨ **Расклад на вопрос:** "{user_question}"
-
-**Выпавшие карты:**
-{', '.join(cards)}
-
-**Толкование:**
-Карты указывают на важный период изменений! Слушай интуицию и будь открыт к новым возможностям.
-
-**Совет:**
-Доверься себе - у тебя есть все ответы внутри! 💫
-
-Требуется ли еще что-то прояснить?
-"""
+BOT_TOKEN=8355095598:AAGi48QWU-4e66ZTR2qMYU6aiK-Py1TxjWU
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     try:
