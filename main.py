@@ -1,12 +1,7 @@
 import os
 import logging
-import threading
-from http.server import HTTPServer, BaseHTTPRequestHandler
+from telegram import Update
 from telegram.ext import Application, CommandHandler, MessageHandler, filters, ContextTypes
-from dotenv import load_dotenv
-
-# Загружаем переменные окружения
-load_dotenv()
 
 # Настройка логирования
 logging.basicConfig(
@@ -15,56 +10,40 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-# Токен бота из .env файла
+# Проверяем токен
 BOT_TOKEN = os.getenv('BOT_TOKEN')
-
-class HealthCheckHandler(BaseHTTPRequestHandler):
-    """Простой обработчик для health checks на Render"""
-    def do_GET(self):
-        self.send_response(200)
-        self.send_header('Content-type', 'text/plain')
-        self.end_headers()
-        self.wfile.write(b'Bot is alive!')
-    
-    def log_message(self, format, *args):
-        """Отключаем стандартное логирование запросов"""
-        return
-
-def run_health_server():
-    """Запускает HTTP сервер для health checks"""
-    port = int(os.getenv('PORT', 10000))
-    server = HTTPServer(('0.0.0.0', port), HealthCheckHandler)
-    logger.info(f"Health check server running on port {port}")
-    server.serve_forever()
+if not BOT_TOKEN:
+    logger.error("❌ ERROR: BOT_TOKEN not found!")
+    exit(1)
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Обработчик команды /start"""
+    user = update.effective_user
     await update.message.reply_text(
-        "🔮 *Привет! Я бот Таро Спутник!*\n\n"
-        "Бот успешно запущен на Render! 🎉\n"
-        "Скоро добавлю функционал гадания.",
+        f"🔮 *Приветствую, {user.first_name}!*\n\n"
+        "Я *Спутник* - твой проводник в мире Таро! 🌙\n\n"
+        "Задай мне вопрос, и я сделаю расклад на картах Таро!\n"
+        "Например: *«Что меня ждет сегодня?»* или *«Стоит ли мне менять работу?»*\n\n"
+        "Я готов к работе! ✨",
         parse_mode='Markdown'
     )
 
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """Обработчик всех текстовых сообщений"""
+    """Обработчик всех сообщений"""
+    user_message = update.message.text
+    
+    # Простой ответ пока не настроен полноценный функционал Таро
     await update.message.reply_text(
-        "✨ Бот работает! Функционал Таро скоро будет добавлен.",
+        f"✨ *Твой вопрос:* \"{user_message}\"\n\n"
+        "Сейчас я настраиваю систему гадания... 🔮\n"
+        "Скоро я смогу делать настоящие расклады Таро!\n\n"
+        "А пока проверь, готов ли ты получить ответ от карт? 🌙",
         parse_mode='Markdown'
     )
 
 def main():
     """Основная функция запуска бота"""
     try:
-        # Проверяем наличие токена
-        if not BOT_TOKEN:
-            logger.error("❌ BOT_TOKEN не найден! Убедись, что он установлен в переменных окружения.")
-            return
-
-        # Запускаем health server в отдельном потоке
-        health_thread = threading.Thread(target=run_health_server, daemon=True)
-        health_thread.start()
-
         # Создаем приложение бота
         application = Application.builder().token(BOT_TOKEN).build()
         
@@ -73,14 +52,14 @@ def main():
         application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
         
         logger.info("🤖 Бот запускается...")
-        logger.info("🩺 Health check server запущен")
+        logger.info(f"✅ Токен: {'Установлен' if BOT_TOKEN else 'НЕ УСТАНОВЛЕН!'}")
         
         # Запускаем бота
         application.run_polling()
         
     except Exception as e:
         logger.error(f"❌ Ошибка при запуске бота: {e}")
-        raise
+        exit(1)
 
 if __name__ == '__main__':
     main()
