@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: tarot-bot
+    env: python
+    plan: free
+    buildCommand: cd bot && pip install -r requirements.txt
+    startCommand: cd bot && python main.py
+    envVars:
+      - key: BOT_TOKEN
+        value: 8355095598:AAGi48QWU-4e66ZTR2qMYU6aiK-Py1TxjWU
+      - key: DEEPSEEK_API_KEY
+        value: sk-0f839b85169d4a02aacc91623db39309
+      - key: YOOKASSA_SHOP_ID
+        value: "1148567"
+      - key: YOOKASSA_SECRET_KEY
+        value: live_2PmhZIeVYTkTKtt7bOaI69ewnrxuNHldHz6G4wJbdvE
