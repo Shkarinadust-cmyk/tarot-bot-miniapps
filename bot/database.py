@@ -1,53 +1,57 @@
 import sqlite3
 import os
 
-DB_PATH = os.path.join(os.path.dirname(__file__), 'tarot_bot.db')
+class Database:
+    def __init__(self):
+        self.conn = sqlite3.connect('users.db', check_same_thread=False)
+        self.create_tables()
+    
+    def create_tables(self):
+        cursor = self.conn.cursor()
+        
+        # Таблица пользователей
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS users (
+                user_id INTEGER PRIMARY KEY,
+                balance INTEGER DEFAULT 10,
+                referral_code TEXT,
+                referred_by INTEGER
+            )
+        ''')
+        
+        # Таблица платежей
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS payments (
+                payment_id TEXT PRIMARY KEY,
+                user_id INTEGER,
+                amount INTEGER,
+                status TEXT,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        ''')
+        
+        self.conn.commit()
+    
+    def get_user_balance(self, user_id):
+        cursor = self.conn.cursor()
+        cursor.execute('SELECT balance FROM users WHERE user_id = ?', (user_id,))
+        result = cursor.fetchone()
+        return result[0] if result else 10
+    
+    def update_balance(self, user_id, amount):
+        cursor = self.conn.cursor()
+        cursor.execute('''
+            INSERT OR REPLACE INTO users (user_id, balance) 
+            VALUES (?, COALESCE((SELECT balance FROM users WHERE user_id = ?), 10) + ?)
+        ''', (user_id, user_id, amount))
+        self.conn.commit()
+    
+    def create_user(self, user_id, referral_code=None):
+        cursor = self.conn.cursor()
+        cursor.execute('''
+            INSERT OR IGNORE INTO users (user_id, balance, referral_code) 
+            VALUES (?, 10, ?)
+        ''', (user_id, referral_code))
+        self.conn.commit()
 
-def init_db():
-    conn = sqlite3.connect(DB_PATH)
-    cur = conn.cursor()
-    cur.execute('''
-        CREATE TABLE IF NOT EXISTS users (
-            user_id INTEGER PRIMARY KEY,
-            balance INTEGER DEFAULT 10,
-            referrer_id INTEGER,
-            registration_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-        )
-    ''')
-    conn.commit()
-    conn.close()
-
-def get_user(user_id):
-    conn = sqlite3.connect(DB_PATH)
-    cur = conn.cursor()
-    cur.execute('SELECT * FROM users WHERE user_id = ?', (user_id,))
-    user = cur.fetchone()
-    conn.close()
-    if user:
-        return {'user_id': user[0], 'balance': user[1], 'referrer_id': user[2], 'registration_date': user[3]}
-    else:
-        return None
-
-def create_user(user_id, referrer_id=None):
-    conn = sqlite3.connect(DB_PATH)
-    cur = conn.cursor()
-    cur.execute('INSERT OR IGNORE INTO users (user_id, balance, referrer_id) VALUES (?, 10, ?)', (user_id, referrer_id))
-    conn.commit()
-    conn.close()
-
-def update_balance(user_id, new_balance):
-    conn = sqlite3.connect(DB_PATH)
-    cur = conn.cursor()
-    cur.execute('UPDATE users SET balance = ? WHERE user_id = ?', (new_balance, user_id))
-    conn.commit()
-    conn.close()
-
-def add_balance(user_id, amount):
-    user = get_user(user_id)
-    if user:
-        new_balance = user['balance'] + amount
-        update_balance(user_id, new_balance)
-        return new_balance
-    else:
-        create_user(user_id)
-        return 10 + amount
+db = Database()
