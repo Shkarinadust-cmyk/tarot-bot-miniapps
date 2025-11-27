@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Пригласить друзей - Аркана</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .back-button {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            padding: 10px 0;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .referral-link {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            word-break: break-all;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+        }
+        
+        .copy-btn {
+            background: #FFD700;
+            color: #8B4513;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 10px;
+            width: 100%;
+        }
+        
+        .friends-list {
+            margin: 20px 0;
+        }
+        
+        .friend-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            margin: 8px 0;
+        }
+        
+        .friend-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #FFD700, #8B4513);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        
+        .friend-info {
+            flex-grow: 1;
+            margin-left: 12px;
+        }
+        
+        .friend-name {
+            font-weight: bold;
+        }
+        
+        .friend-date {
+            font-size: 12px;
+            opacity: 0.7;
+        }
+        
+        .bonus-badge {
+            background: #FFD700;
+            color: #8B4513;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+            text-align: center;
+        }
+        
+        .stat-item {
+            flex: 1;
+        }
+        
+        .stat-number {
+            font-size: 24px;
+            font-weight: bold;
+            color: #FFD700;
+        }
+        
+        .stat-label {
+            font-size: 12px;
+            opacity: 0.8;
+        }
+        
+        .how-it-works {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        
+        .step {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+        }
+        
+        .step-number {
+            background: #FFD700;
+            color: #8B4513;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 10px;
+            flex-shrink: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <button class="back-button" onclick="goBack()">
+                ← Назад
+            </button>
+            <h1>Советовать друзьям</h1>
+            <p class="subtitle">Получай бонусы за приглашения</p>
+        </header>
+
+        <section>
+            <h2>Ваша ссылка для приглашений</h2>
+            <div class="referral-link" id="referralLink">
+                https://t.me/SputnikTarobot?start=ref_123456
+            </div>
+            <button class="copy-btn" onclick="copyReferralLink()">
+                📋 Скопировать ссылку
+            </button>
+        </section>
+
+        <div class="stats">
+            <div class="stat-item">
+                <div class="stat-number" id="friendsCount">0</div>
+                <div class="stat-label">Друзей</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" id="bonusCount">0</div>
+                <div class="stat-label">Бонусов</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" id="earnedCount">0</div>
+                <div class="stat-label">Заработано</div>
+            </div>
+        </div>
+
+        <section class="how-it-works">
+            <h3>Как это работает?</h3>
+            <div class="step">
+                <div class="step-number">1</div>
+                <div>Поделись ссылкой с друзьями</div>
+            </div>
+            <div class="step">
+                <div class="step-number">2</div>
+                <div>Друг регистрируется по твоей ссылке</div>
+            </div>
+            <div class="step">
+                <div class="step-number">3</div>
+                <div>Вы оба получаете по 10 вопросов!</div>
+            </div>
+        </section>
+
+        <section class="friends-list">
+            <h2>Ваши друзья</h2>
+            <div id="friendsContainer">
+                <div class="no-friends" id="noFriends">
+                    Пока нет друзей<br>
+                    <small>Пригласи друзей и они появятся здесь</small>
+                </div>
+                <!-- Список друзей будет добавляться динамически -->
+            </div>
+        </section>
+
+        <button class="btn-primary" onclick="inviteFriends()">
+            📤 Пригласить друзей
+        </button>
+    </div>
+
+    <script>
+        function goBack() {
+            window.history.back();
+        }
+        
+        function copyReferralLink() {
+            const linkElement = document.getElementById('referralLink');
+            const linkText = linkElement.textContent;
+            
+            // Копируем в буфер обмена
+            navigator.clipboard.writeText(linkText).then(function() {
+                // Меняем текст кнопки на короткое время
+                const button = event.target;
+                const originalText = button.textContent;
+                button.textContent = '✅ Скопировано!';
+                button.style.background = '#4CAF50';
+                
+                setTimeout(() => {
+                    button.textContent = originalText;
+                    button.style.background = '';
+                }, 2000);
+            }).catch(function(err) {
+                alert('Не удалось скопировать ссылку');
+            });
+        }
+        
+        function inviteFriends() {
+            const link = document.getElementById('referralLink').textContent;
+            const message = `🔮 *Привет!* 
+
+Открой для себя магию Таро с ботом Спутник! 
+
+Получи 10 бесплатных вопросов для гадания по этой ссылке: ${link}
+
+Давай вместе исследуем тайны карт! ✨`;
+            
+            // Для Telegram Mini Apps - открываем диалог выбора контактов
+            if (window.Telegram && Telegram.WebApp) {
+                Telegram.WebApp.shareMessage(message);
+            } else {
+                // Для обычного браузера
+                const shareUrl = `https://t.me/share/url?url=${encodeURIComponent(link)}&text=${encodeURIComponent(message)}`;
+                window.open(shareUrl, '_blank');
+            }
+        }
+        
+        // Загрузка данных реферальной системы
+        document.addEventListener('DOMContentLoaded', function() {
+            loadReferralData();
+        });
+        
+        function loadReferralData() {
+            // Здесь будет загрузка реальных данных из API
+            // Пока используем демо-данные
+            
+            const userId = localStorage.getItem('userId') || generateUserId();
+            const referralLink = `https://t.me/SputnikTarobot?start=ref_${userId}`;
+            
+            document.getElementById('referralLink').textContent = referralLink;
+            
+            // Загружаем статистику
+            const stats = JSON.parse(localStorage.getItem('referralStats')) || {
+                friendsCount: 0,
+                bonusCount: 0,
+                earnedCount: 0
+            };
+            
+            document.getElementById('friendsCount').textContent = stats.friendsCount;
+            document.getElementById('bonusCount').textContent = stats.bonusCount;
+            document.getElementById('earnedCount').textContent = stats.earnedCount;
+            
+            // Загружаем список друзей
+            loadFriendsList();
+        }
+        
+        function generateUserId() {
+            const userId = Math.random().toString(36).substr(2, 9);
+            localStorage.setItem('userId', userId);
+            return userId;
+        }
+        
+        function loadFriendsList() {
+            const friends = JSON.parse(localStorage.getItem('referralFriends')) || [];
+            const container = document.getElementById('friendsContainer');
+            const noFriends = document.getElementById('noFriends');
+            
+            if (friends.length > 0) {
+                noFriends.style.display = 'none';
+                
+                friends.forEach(friend => {
+                    const friendElement = document.createElement('div');
+                    friendElement.className = 'friend-item';
+                    friendElement.innerHTML = `
+                        <div class="friend-avatar">${friend.name.charAt(0)}</div>
+                        <div class="friend-info">
+                            <div class="friend-name">${friend.name}</div>
+                            <div class="friend-date">Присоединился ${friend.date}</div>
+                        </div>
+                        <div class="bonus-badge">+10</div>
+                    `;
+                    container.appendChild(friendElement);
+                });
+            } else {
+                noFriends.style.display = 'block';
+            }
+        }
+        
+        // Демо-данные для тестирования
+        function addDemoFriend() {
+            const friends = JSON.parse(localStorage.getItem('referralFriends')) || [];
+            const newFriend = {
+                id: Date.now(),
+                name: 'Анна',
+                date: '14.11.2024'
+            };
+            
+            friends.push(newFriend);
+            localStorage.setItem('referralFriends', JSON.stringify(friends));
+            
+            const stats = JSON.parse(localStorage.getItem('referralStats')) || {
+                friendsCount: 0,
+                bonusCount: 0,
+                earnedCount: 0
+            };
+            
+            stats.friendsCount += 1;
+            stats.bonusCount += 10;
+            stats.earnedCount += 10;
+            
+            localStorage.setItem('referralStats', JSON.stringify(stats));
+            
+            // Перезагружаем данные
+            loadReferralData();
+        }
+        
+        // Для тестирования - добавляем демо-друга
+        // addDemoFriend();
+    </script>
+</body>
+</html>
