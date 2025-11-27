@@ -36,5 +36,5 @@ if __name__ == '__main__':
         listen='0.0.0.0',
         port=int(os.environ.get('PORT', 5000)),
         url_path='/webhook',
-        webhook_url='https://your-render-service-url.onrender.com/webhook' # ЗАМЕНИТЕ на ваш URL
+        webhook_url='https://tarot-bot-miniapps.onrender.com/webhook'
     )
