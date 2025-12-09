@@ -1,0 +1,248 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg, #3e2723 0%, #5d4037 100%);
+    color: #f5e9d9;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.container {
+    max-width: 400px;
+    margin: 0 auto;
+    background: rgba(93, 64, 55, 0.9);
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+/* Шапка */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #8d6e63;
+    margin-bottom: 25px;
+}
+
+.balance {
+    font-size: 24px;
+    font-weight: bold;
+    color: #ffcc80;
+}
+
+.balance i {
+    margin-right: 10px;
+}
+
+.btn-buy {
+    background: #d84315;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 50px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.btn-buy:hover {
+    background: #ff5722;
+    transform: scale(1.05);
+}
+
+/* Секции */
+section {
+    background: rgba(121, 85, 72, 0.7);
+    padding: 20px;
+    border-radius: 15px;
+    margin-bottom: 20px;
+    border-left: 5px solid #ffcc80;
+}
+
+h2 {
+    color: #ffcc80;
+    margin-bottom: 15px;
+    font-size: 18px;
+}
+
+h2 i {
+    margin-right: 10px;
+}
+
+/* Карта дня */
+.card-content {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.card-image {
+    width: 80px;
+    height: 120px;
+    background: linear-gradient(135deg, #ffcc80 0%, #ffab40 100%);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 40px;
+    color: #5d4037;
+}
+
+/* Переключатель */
+.toggle {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #8d6e63;
+    transition: .4s;
+    border-radius: 34px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: #f5e9d9;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background-color: #ff9800;
+}
+
+input:checked + .slider:before {
+    transform: translateX(26px);
+}
+
+/* Кнопки */
+.btn-invite, .btn-pay {
+    width: 100%;
+    padding: 15px;
+    margin-top: 10px;
+    background: #ff9800;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.btn-invite:hover, .btn-pay:hover {
+    background: #ffb74d;
+}
+
+/* Ссылки */
+a {
+    color: #ffcc80;
+    text-decoration: none;
+    display: block;
+    padding: 10px 0;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Модальное окно */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 1000;
+}
+
+.modal-content {
+    background: #5d4037;
+    margin: 5% auto;
+    padding: 30px;
+    width: 90%;
+    max-width: 400px;
+    border-radius: 20px;
+    position: relative;
+}
+
+.close {
+    color: #ffcc80;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.payment-options {
+    display: grid;
+    gap: 10px;
+    margin: 20px 0;
+}
+
+.option {
+    background: rgba(255, 204, 128, 0.2);
+    padding: 15px;
+    border-radius: 10px;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: all 0.3s;
+}
+
+.option:hover, .option.selected {
+    border-color: #ff9800;
+    background: rgba(255, 152, 0, 0.3);
+}
+
+.payment-methods {
+    margin: 25px 0;
+}
+
+.oferta {
+    font-size: 12px;
+    text-align: center;
+    color: #bcaaa4;
+    margin-top: 20px;
+}
+
+.developer {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #8d6e63;
+    font-size: 14px;
+    color: #bcaaa4;
+}

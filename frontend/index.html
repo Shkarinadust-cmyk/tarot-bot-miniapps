@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Спутник - Таро Бот</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Шапка с балансом -->
+        <header class="header">
+            <div class="balance">
+                <i class="fas fa-coins"></i>
+                <span id="balanceCount">10</span> вопросов
+            </div>
+            <button class="btn-buy" onclick="openPayment()">
+                <i class="fas fa-shopping-cart"></i> Купить вопросы
+            </button>
+        </header>
+
+        <!-- Основной контент -->
+        <main class="main">
+            <!-- Карта дня -->
+            <section class="card-day">
+                <h2><i class="fas fa-star"></i> Карта дня</h2>
+                <div class="card-content">
+                    <div class="card-image">✨</div>
+                    <p>Сегодняшняя карта: <strong>Сила</strong><br>Внутренняя сила и мягкость помогут преодолеть препятствия.</p>
+                </div>
+            </section>
+
+            <!-- Совет дня -->
+            <section class="advice">
+                <h2><i class="fas fa-sun"></i> Совет дня</h2>
+                <div class="toggle">
+                    <label>Получать советы</label>
+                    <label class="switch">
+                        <input type="checkbox" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </section>
+
+            <!-- Пригласить друзей -->
+            <section class="friends">
+                <h2><i class="fas fa-user-friends"></i> Совет друзьям</h2>
+                <p>Пригласите друга и получите по 10 бесплатных вопросов каждый!</p>
+                <button class="btn-invite" onclick="inviteFriend()">
+                    <i class="fas fa-share-alt"></i> Пригласить друзей
+                </button>
+            </section>
+
+            <!-- Отзывы -->
+            <section class="reviews">
+                <h2><i class="fas fa-comment-alt"></i> Отзывы</h2>
+                <a href="https://t.me/your_reviews_channel" target="_blank">Читать отзывы в Telegram →</a>
+            </section>
+
+            <!-- Поддержка -->
+            <section class="support">
+                <h2><i class="fas fa-headset"></i> Поддержка</h2>
+                <a href="https://t.me/your_support_channel" target="_blank">Написать в поддержку →</a>
+            </section>
+
+            <!-- Юридическая информация -->
+            <section class="legal">
+                <h2><i class="fas fa-file-contract"></i> Юридическая информация</h2>
+                <div class="links">
+                    <a href="#" onclick="openDocument('terms')">Пользовательское соглашение</a>
+                    <a href="#" onclick="openDocument('privacy')">Политика конфиденциальности</a>
+                </div>
+                <div class="developer">
+                    <p>Разработчик: Ваше Имя</p>
+                    <p>Email: your.email@example.com</p>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Модальное окно оплаты -->
+    <div id="paymentModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closePayment()">&times;</span>
+            <h2>Купить вопросы</h2>
+            
+            <div class="payment-options">
+                <div class="option" onclick="selectOption(100, 300)">
+                    <h3>100 вопросов</h3>
+                    <p>300 руб.</p>
+                </div>
+                <div class="option" onclick="selectOption(200, 600)">
+                    <h3>200 вопросов</h3>
+                    <p>600 руб.</p>
+                </div>
+                <div class="option" onclick="selectOption(300, 900)">
+                    <h3>300 вопросов</h3>
+                    <p>900 руб.</p>
+                </div>
+                <div class="option" onclick="selectOption(500, 1500)">
+                    <h3>500 вопросов</h3>
+                    <p>1500 руб.</p>
+                </div>
+                <div class="option" onclick="selectOption(1000, 3000)">
+                    <h3>1000 вопросов</h3>
+                    <p>3000 руб.</p>
+                </div>
+            </div>
+
+            <div class="payment-methods">
+                <h3>Способ оплаты</h3>
+                <button class="btn-pay" onclick="processPayment('card')">
+                    <i class="fab fa-cc-visa"></i> Банковская карта
+                </button>
+                <button class="btn-pay" onclick="processPayment('sbp')">
+                    <i class="fas fa-mobile-alt"></i> СБП
+                </button>
+            </div>
+
+            <div class="oferta">
+                <p>Нажимая "Оплатить", вы соглашаетесь с <a href="#">договором оферты</a>.</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+    <script src="payment.js"></script>
+</body>
+</html>
